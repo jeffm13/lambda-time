@@ -19,7 +19,8 @@
     "mocha": "^2.4.5"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "preversion": "npm test"
   },
   "repository": {
     "type": "git",

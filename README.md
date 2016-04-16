@@ -1,4 +1,6 @@
 # lambda-time
+[![Build Status](https://travis-ci.org/jeffm13/lambda-time.svg?branch=master)](https://travis-ci.org/jeffm13/lambda-time)
+
 Lightweight Node.js utilities to simplify AWS Lambda development activities.  
 
 Most of the Lambda tutorials you'll find out there on the Interweb can handle "Hello, world!" very well.  Need another function? Just add it to Lambda. But when you move past the examples and attempt to create something meaningful, you might ask yourself: "Hmm, managing all these functions separately might become painful, so is it really a good idea?".  Especially when they all require the same shared packages, and when many need to communicate with each other somehow.

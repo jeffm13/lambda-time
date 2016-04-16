@@ -33,4 +33,4 @@ module.exports = handler
 The server maintains a table of routes, and routes all events to registered handlers. Each route path
 
 ## Event handlers
-An event handler
+An event handler responds to an event. It's about as simple as it can be. It takes an event and an AWS Lambda context as arguments, and returns a response.  For now, each path/method combination will only support a single handler. 

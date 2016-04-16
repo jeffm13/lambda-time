@@ -1,6 +1,6 @@
 {
   "name": "lambda-time",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Lightweight utilities to simplify AWS Lambda development efforts",
   "main": "index.js",
   "directories": {

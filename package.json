@@ -1,0 +1,40 @@
+{
+  "name": "lambda-time",
+  "version": "0.2.0",
+  "description": "Lightweight utilities to simplify AWS Lambda development efforts",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.3.5",
+    "boom": "^3.1.2",
+    "hoek": "^3.0.4",
+    "http-errors": "^1.4.0",
+    "joi": "^8.0.5",
+    "lodash": "^4.11.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffm13/lambda-time.git"
+  },
+  "keywords": [
+    "amazon",
+    "aws",
+    "lambda",
+    "router"
+  ],
+  "author": "Jeff Mackay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeffm13/lambda-time/issues"
+  },
+  "homepage": "https://github.com/jeffm13/lambda-time#readme"
+}

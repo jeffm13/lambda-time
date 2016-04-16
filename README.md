@@ -13,9 +13,9 @@ a twist.  It favors configuration over code in a way similar to the popular hapi
 To define a route, register it when your Lambda is loaded:
 ```
 var Lambda = require('lambda-time');
-var Server = new lambda.Server();
+var Router = new Lamba();
 
-Server.route([
+Router.route([
  {
    path: '/greeting',
    method: 'GET',
@@ -26,7 +26,7 @@ Server.route([
  ]);
 
 function handler(event, context) {
-  Server.handle(event, context);
+  Router.handle(event, context);
 }
 module.exports = handler
 ```

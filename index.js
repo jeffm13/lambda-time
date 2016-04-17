@@ -13,6 +13,13 @@ var routerSchema = Joi.object().keys({
   handler: Joi.any().required()
 });
 
+var eventSchema = Joi.object().keys({
+  context: Joi.object().keys({
+    path: Joi.string().required(),
+    method: Joi.string().required(),
+  }).unknown()
+}).unknown();
+
 module.exports = exports = internals.Router = function (options) {
 
   if (!(this instanceof internals.Router))
@@ -30,11 +37,8 @@ internals.Router.prototype.register = function (route) {
   Hoek.assert(route, 'route is required');
   var result = Joi.validate(route, routerSchema);
   if (result.error) {
-    console.log('error = ' + result.error)
     throw (result.error)
   }
-
-  console.log('routes = ' + this.routes);
 
   if (!routes[route.path])
     routes[route.path] = {}
@@ -45,22 +49,37 @@ internals.Router.prototype.register = function (route) {
 }
 
 internals.Router.prototype.handler = function (event, context) {
-  var request = event;
-  var response = {};
-  if (event.context && event.context.path) {
-    let route = this.routes[event.context.path][event.context.method];
-    if (route) {
-      route.handler(event, context, response)
-        .then((response) => {
-          context.done(null, response);
-        })
-        .catch((error) => {
-          context.fail(error, response);
-        })
+  var self = this;
+  return new Promise((resolve, reject) => {
+    Hoek.assert(event, 'event is required');
+    Hoek.assert(context, 'context is required');
+    var result = Joi.validate(event, eventSchema);
+    if (result.error)
+      return reject(result.error);
+
+    if (event.context && event.context.path) {
+      let route = this._getRoute(event, context);
+      if (route) {
+        return route.handler(event, context)
+          .then((response) => {
+            return resolve(response);
+          })
+          .catch((error) => {
+            return reject(error);
+          })
+      } else {
+        return reject(Boom.notImplemented('Handler for path [' + event.context.path + '] not registered'));
+      }
     } else {
-      context.fail(Boom.notImplemented('Handler not implemented'))
+      return reject(Boom.badImplementation('Request context, method, and path are required'));
     }
-  } else {
-    context.fail(Boom.badImplementation('Request context, method, path are required'))
+  })
+}
+
+internals.Router.prototype._getRoute = function (event, context) {
+  if (this.routes[event.context.path])
+    return this.routes[event.context.path][event.context.method];
+  else {
+    return null;
   }
 }

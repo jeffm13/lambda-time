@@ -1,5 +1,10 @@
 # lambda-time
 [![Build Status](https://travis-ci.org/jeffm13/lambda-time.svg?branch=master)](https://travis-ci.org/jeffm13/lambda-time)
+![Dependencies](https://david-dm.org/jeffm13/lambda-time.svg)
+[![node](https://img.shields.io/badge/Node.js-4.3.2-brightgreen.svg?maxAge=2592000)]()
+
+[![NPM](https://nodei.co/npm/lambda-time.png)](https://nodei.co/npm/lambda-time/)
+
 
 Lightweight Node.js utilities to simplify AWS Lambda development activities.  
 

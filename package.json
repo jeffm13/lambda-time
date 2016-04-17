@@ -36,7 +36,7 @@
     "router"
   ],
   "author": "Jeff Mackay",
-  "license": "MIT",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/jeffm13/lambda-time/issues"
   },

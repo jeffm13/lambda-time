@@ -1,7 +1,14 @@
 language: node_js
 node_js:
-  - 4.3.2
+- 4.3.2
 sudo: false
 cache:
-  directories:
-    node_modules
+  directories: node_modules
+deploy:
+  provider: npm
+  email: jeff.mackay@outlook.com
+  api_key:
+    secure: j1iqmHOeXWbQ/v/5NU/5XT6g33scLtxZC+dwmBQzwZFFILId+tzXUiBNiz+ezAFX/0/3+goErC9GJ3upIwdpgPYYv2t//LGnmA9SWRMJ7PdleDlMy6K7zkm4va70I3q0WM7rICawOC/jySw+9KWZRLGFUrNW/6+hS/CoXwEnS13FX9YtjzP9MvpEaQ77ibEYVsgBVWqfZPRKs2TTLZA+Xl+VhML3z4W4UWUdF2o7nAPRQngc1bSGs253CvmJivkgO+wcn4jnPSD4GiNgUmr8SvbDPU8OngLfUIVse8EgeKr/uTzSNO1hARccKgBUx6vNDK5YMTWLKBHbgCvFBzeUt8mUVH4JCEVNCvzr2qgfbz0TCoKh6nWBPfTeR0JxpfPoNw/6+xbRl4QUVq6Ygf+JKrV+Z3wVwhALFS8DkobHXvvBgNyMk4GaVWvYfghTDANtEXNBvWfbxSI+0gIAPTFzAj67t9AQCUDw5kdrE1Mvkbbbxq9J3BliMfbvX/ixcB/Fs4s3ibAGKE8TuINAvhup2xbF9V1ykgRvYoFp6RirTyBmiGgg80Dy8OHuu1OS/rI0DSfnkaSl1oiStX5fL1RqUKhf87YJhMtQ2GgjC4JXnVyTBK0yKYG1KjPaqpfTdMXPzdVW2WkP53DMjFQqUisSfOxMBsGvU1lrDCaB1wyah0A=
+  on:
+    tags: true
+    repo: jeffm13/lambda-time

@@ -48,7 +48,7 @@ internals.Router.prototype.register = function (route) {
   }
 }
 
-internals.Router.prototype.handler = function (event, context) {
+internals.Router.prototype.route = function (event, context) {
   var self = this;
   return new Promise((resolve, reject) => {
     Hoek.assert(event, 'event is required');

@@ -81,7 +81,7 @@ describe('Router:@unit', () => {
   describe('Routing:@unit', () => {
     it('should fail when routing a null event', () => {
       var event = null;
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
         })
@@ -92,7 +92,7 @@ describe('Router:@unit', () => {
 
     it('should fail when routing an event to a router with no routes defined', () => {
       var event = {};
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
         })
@@ -103,7 +103,7 @@ describe('Router:@unit', () => {
 
     it('should fail when routing an event that has no API gateway context', () => {
       var event = {};
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
         })
@@ -129,7 +129,7 @@ describe('Router:@unit', () => {
         }
       }
       router.register(route);
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.exist;
           context.done(null, response);
@@ -159,7 +159,7 @@ describe('Router:@unit', () => {
         }
       }
       router.register(route);
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);
@@ -188,7 +188,7 @@ describe('Router:@unit', () => {
         }
       }
       router.register(route);
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);
@@ -218,7 +218,7 @@ describe('Router:@unit', () => {
       }
       router.register(route);
       console.log('running test')
-      router.handler(event, context)
+      router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);

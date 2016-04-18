@@ -1,6 +1,8 @@
 'use strict;'
 
 var Lambda = require('../index')
+var Boom = require('boom')
+
 var router;
 
 var Chai = require('chai');
@@ -198,5 +200,36 @@ describe('Router:@unit', () => {
       done()
     });
 
+    it('should fail with a Boom payload when request causes handler to reject', (done) => {
+      var route = {
+        path: '/hello',
+        method: 'GET',
+        handler: (event, context) => {
+          return new Promise((resolve, reject) => {
+            return reject(Boom.badImplementation('this is a bad implementation'));
+          });
+        }
+      };
+      var event = {
+        context: {
+          'resource-path': '/hello',
+          'http-method': 'GET'
+        }
+      }
+      router.register(route);
+      console.log('running test')
+      router.handler(event, context)
+        .then((response) => {
+          expect(response).to.not.exist;
+          context.done(null, response);
+        })
+        .catch((error) => {
+          expect(error).to.exist;
+          expect(error.isBoom).to.not.exist;
+          context.done(error, null);
+        });
+      done()
+    });
   });
+
 });

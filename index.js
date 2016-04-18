@@ -65,7 +65,7 @@ internals.Router.prototype.handler = function (event, context) {
             return resolve(response);
           })
           .catch((error) => {
-            var errorStatus = (error.isBoom()) ? error.payload : error;
+            var errorStatus = (error.isBoom) ? error.output.payload : error;
             return reject(errorStatus);
           })
       } else {

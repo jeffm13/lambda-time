@@ -65,7 +65,8 @@ internals.Router.prototype.handler = function (event, context) {
             return resolve(response);
           })
           .catch((error) => {
-            return reject(error);
+            var errorStatus = (error.isBoom()) ? error.payload : error;
+            return reject(errorStatus);
           })
       } else {
         return reject(Boom.notImplemented(event.context['http-method'] + ' handler for path [' + event.context['resource-path'] + '] not registered'));

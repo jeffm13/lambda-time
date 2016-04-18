@@ -122,8 +122,8 @@ describe('Router:@unit', () => {
       };
       var event = {
         context: {
-          path: '/hello',
-          method: 'get'
+          'resource-path': '/hello',
+          'http-method': 'GET'
         }
       }
       router.register(route);
@@ -134,7 +134,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.not.exist;
-          context.done(error, response);
+          context.done(error, null);
         });
       done()
     });
@@ -143,7 +143,7 @@ describe('Router:@unit', () => {
     it('should fail when routing an event to a router without a matching route defined', (done) => {
       var route = {
         path: '/goodbye',
-        method: 'get',
+        method: 'GET',
         handler: (event, context) => {
           return new Promise((resolve) => {
             return resolve('goodbye, world');
@@ -152,8 +152,8 @@ describe('Router:@unit', () => {
       };
       var event = {
         context: {
-          path: '/hello',
-          method: 'get'
+          'resource-path': '/hello',
+          'http-method': 'GET'
         }
       }
       router.register(route);
@@ -172,7 +172,7 @@ describe('Router:@unit', () => {
     it('should fail when request causes handler to reject', (done) => {
       var route = {
         path: '/hello',
-        method: 'get',
+        method: 'GET',
         handler: (event, context) => {
           return new Promise((resolve, reject) => {
             return reject('this is a problem');
@@ -181,8 +181,8 @@ describe('Router:@unit', () => {
       };
       var event = {
         context: {
-          path: '/hello',
-          method: 'get'
+          'resource-path': '/hello',
+          'http-method': 'GET'
         }
       }
       router.register(route);

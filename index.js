@@ -15,8 +15,8 @@ var routerSchema = Joi.object().keys({
 
 var eventSchema = Joi.object().keys({
   context: Joi.object().keys({
-    path: Joi.string().required(),
-    method: Joi.string().required(),
+    'resource-path': Joi.string().required(),
+    'http-method': Joi.string().required(),
   }).unknown()
 }).unknown();
 
@@ -42,7 +42,7 @@ internals.Router.prototype.register = function (route) {
 
   if (!routes[route.path])
     routes[route.path] = {}
-  routes[route.path][route.method] = route;
+  routes[route.path][route.method.toUpperCase()] = route;
   if (route.initialize && typeof route.initialize == 'function') {
     route.validate(event.context)
   }
@@ -57,7 +57,7 @@ internals.Router.prototype.handler = function (event, context) {
     if (result.error)
       return reject(result.error);
 
-    if (event.context && event.context.path) {
+    if (event.context && event.context['resource-path']) {
       let route = this._getRoute(event, context);
       if (route) {
         return route.handler(event, context)
@@ -68,7 +68,7 @@ internals.Router.prototype.handler = function (event, context) {
             return reject(error);
           })
       } else {
-        return reject(Boom.notImplemented('Handler for path [' + event.context.path + '] not registered'));
+        return reject(Boom.notImplemented(event.context['http-method'] + ' handler for path [' + event.context['resource-path'] + '] not registered'));
       }
     } else {
       return reject(Boom.badImplementation('Request context, method, and path are required'));
@@ -77,9 +77,10 @@ internals.Router.prototype.handler = function (event, context) {
 }
 
 internals.Router.prototype._getRoute = function (event, context) {
-  if (this.routes[event.context.path])
-    return this.routes[event.context.path][event.context.method];
-  else {
+  var entry = this.routes[event.context['resource-path']]
+  if (entry) {
+    return entry[event.context['http-method'].toUpperCase()];
+  } else {
     return null;
   }
 }

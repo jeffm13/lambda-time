@@ -10,7 +10,7 @@ var internals = {}
 var routerSchema = Joi.object().keys({
   path: Joi.string().required(),
   method: Joi.string().required(),
-  handler: Joi.any().required()
+  handler: Joi.func().arity(2).required()
 });
 
 var eventSchema = Joi.object().keys({
@@ -46,6 +46,7 @@ internals.Router.prototype.register = function (route) {
   if (route.initialize && typeof route.initialize == 'function') {
     route.validate(event.context)
   }
+  console.log('route table = ' + JSON.stringify(this.routes))
 }
 
 internals.Router.prototype.route = function (event, context) {

@@ -46,7 +46,6 @@ internals.Router.prototype.register = function (route) {
   if (route.initialize && typeof route.initialize == 'function') {
     route.validate(event.context)
   }
-  console.log('route table = ' + JSON.stringify(this.routes))
 }
 
 internals.Router.prototype.route = function (event, context) {

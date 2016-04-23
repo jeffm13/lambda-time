@@ -44,14 +44,41 @@ function handler(event, context) {
 }
 module.exports = handler;
 ```
-The server maintains a table of routes, and routes all events to registered handlers. Each route path
+The server maintains a table of routes, and routes all events to registered event handlers.
 
 ## Event handlers
 An event handler responds to an event. It's about as simple as it can be. It takes an event and an AWS Lambda context as arguments, and returns a promise that resolves to a response.  For now, each path/method combination will only support a single handler, and handlers must return a promise.
 
 ## Promises
-We prefer using bluebird.
+We prefer using bluebird.  If you need another promise implementation, raise an issue.
 
 ## Deploying your Lambda
 
-TBD
+Relatively simple deployments can be executed with gulp using the node-aws-lambda package.  If your project is a bit more ambitious, and can use a continuous integration tool, deployment is probably better handled through the CI environment--especially if your function uses any native packages.  For example, for free open source or private projects that use Travis, a Travis build file can be structured similar to this: 
+```
+language: node_js
+node_js:
+- 4.3.2
+sudo: required
+dist: trusty
+cache:
+  directories: node_modules
+before_script:
+- npm install -g gulp
+script: gulp test
+after_success: gulp dist
+deploy:
+  provider: lambda
+  skip_cleanup: true
+  edge: true
+  access_key_id:
+    secure: <encrypted access key goes here>
+  secret_access_key:
+    secure: <encrypted secret goes here>
+  function_name: <name of the Lambda function>
+  handler_name: handler
+  runtime: nodejs4.3
+  role: <lambda execution role>
+  zip_file: dist.zip
+```
+In the example above, the gulpfile.js contains directives pulled from the `node-aws-lambda` package to create a zip file that is uploaded to Lambda.

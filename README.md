@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/jeffm13/lambda-time.svg?branch=master)](https://travis-ci.org/jeffm13/lambda-time)
 ![Dependencies](https://david-dm.org/jeffm13/lambda-time.svg)
 [![node](https://img.shields.io/badge/Node.js-4.3.2-brightgreen.svg?maxAge=2592000)]()
+[![Coverage Status](https://coveralls.io/repos/github/jeffm13/lambda-time/badge.svg?branch=master)](https://coveralls.io/github/jeffm13/lambda-time?branch=master)
 
 [![NPM](https://nodei.co/npm/lambda-time.png)](https://nodei.co/npm/lambda-time/)
 
@@ -54,7 +55,7 @@ We prefer using bluebird.  If you need another promise implementation, raise an 
 
 ## Deploying your Lambda
 
-Relatively simple deployments can be executed with gulp using the node-aws-lambda package.  If your project is a bit more ambitious, and can use a continuous integration tool, deployment is probably better handled through the CI environment--especially if your function uses any native packages.  For example, for free open source or private projects that use Travis, a Travis build file can be structured similar to this: 
+Relatively simple deployments can be executed with gulp using the node-aws-lambda package.  If your project is a bit more ambitious, and can use a continuous integration tool, deployment is probably better handled through the CI environment--especially if your function uses any native packages.  For example, for free open source or private projects that use Travis, a Travis build file can be structured similar to this:
 ```
 language: node_js
 node_js:

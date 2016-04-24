@@ -8,7 +8,6 @@ before_script:
   - npm install -g mocha eslint
 script:
   - npm test
-  - bithound check git@github.com:jeffm13/lambda-time.git
 deploy:
   provider: npm
   email: jeff.mackay@outlook.com

@@ -1,11 +1,11 @@
 'use strict';
-var Promise = require('bluebird')
-var assert = require('assert')
-var Joi = require('joi')
-var Hoek = require('hoek')
-var Boom = require('boom')
+var Promise = require('bluebird');
+var assert = require('assert');
+var Joi = require('joi');
+var Hoek = require('hoek');
+var Boom = require('boom');
 
-var internals = {}
+var internals = {};
 
 var routerSchema = Joi.object().keys({
   path: Joi.string().required(),
@@ -20,7 +20,7 @@ var eventSchema = Joi.object().keys({
   }).unknown()
 }).unknown();
 
-module.exports = exports = internals.Router = function (options) {
+module.exports = exports = internals.Router = function(options) {
 
   if (!(this instanceof internals.Router))
     return new internals.Router();
@@ -31,24 +31,24 @@ module.exports = exports = internals.Router = function (options) {
 }
 
 
-internals.Router.prototype.register = function (route) {
+internals.Router.prototype.register = function(route) {
   var routes = this.routes;
 
   Hoek.assert(route, 'route is required');
   var result = Joi.validate(route, routerSchema);
   if (result.error) {
-    throw (result.error)
+    throw (result.error);
   }
 
   if (!routes[route.path])
-    routes[route.path] = {}
+    routes[route.path] = {};
   routes[route.path][route.method.toUpperCase()] = route;
   if (route.initialize && typeof route.initialize == 'function') {
-    route.validate(event.context)
+    route.validate(event.context);
   }
 }
 
-internals.Router.prototype.route = function (event, context) {
+internals.Router.prototype.route = function(event, context) {
   var self = this;
   return new Promise((resolve, reject) => {
     Hoek.assert(event, 'event is required');
@@ -77,7 +77,7 @@ internals.Router.prototype.route = function (event, context) {
   })
 }
 
-internals.Router.prototype._getRoute = function (event, context) {
+internals.Router.prototype._getRoute = function(event, context) {
   var entry = this.routes[event.context['resource-path']]
   if (entry) {
     return entry[event.context['http-method'].toUpperCase()];

@@ -160,7 +160,7 @@ describe('Router:@unit', () => {
           'resource-path': '/hello',
           'http-method': 'GET'
         }
-      }
+      };
       router.register(route);
       router.route(event, context)
         .then((response) => {
@@ -191,7 +191,7 @@ describe('Router:@unit', () => {
           'resource-path': '/hello',
           'http-method': 'GET'
         }
-      }
+      };
       router.register(route);
       router.route(event, context)
         .then((response) => {

@@ -4,6 +4,8 @@ node_js:
 sudo: false
 cache:
   directories: node_modules
+script: 
+  bithound check git@github.com:jeffm13/lambda-time.git
 deploy:
   provider: npm
   email: jeff.mackay@outlook.com

@@ -68,6 +68,15 @@ describe('Router:@unit', () => {
       };
       expect(router.register.bind(router, route)).to.throw(Error);
     });
+    it('should fail when invoking with invalid property name', () => {
+      var route = {
+        methd: 'get',
+        handler: (event, context) => {
+          return "hello, world";
+        }
+      };
+      expect(router.register.bind(router, route)).to.throw(Error);
+    });
     it('should succeed when invoking with a valid route definition', () => {
       var route = {
         path: '/hello',
@@ -76,6 +85,18 @@ describe('Router:@unit', () => {
           return "hello, world";
         }
       };
+      expect(router.register.bind(router, route)).to.not.throw(Error);
+    });
+    it('should succeed when invoking with more than one method on the same path', () => {
+      var route = {
+        path: '/hello',
+        method: 'get',
+        handler: (event, context) => {
+          return "hello, world";
+        }
+      };
+      expect(router.register.bind(router, route)).to.not.throw(Error);
+      route.method = 'post';
       expect(router.register.bind(router, route)).to.not.throw(Error);
     });
   });
@@ -233,6 +254,35 @@ describe('Router:@unit', () => {
         .catch((error) => {
           expect(error).to.exist;
           expect(error.isBoom).to.not.exist;
+          context.done(error, null);
+          done();
+        });
+    });
+    it('should fail with a Boom payload when request has invalid properties', (done) => {
+      var route = {
+        path: '/hello',
+        method: 'GET',
+        handler: (event, context) => {
+          return new Promise((resolve, reject) => {
+            return reject(Boom.badImplementation('this is a bad implementation'));
+          });
+        }
+      };
+      var event = {
+        context: {
+          'rsource-path': '/hello',
+          'http-method': 'GET'
+        }
+      };
+      router.register(route);
+      router.route(event, context)
+        .then((response) => {
+          expect(response).to.not.exist;
+          context.done(null, response);
+          done();
+        })
+        .catch((error) => {
+          expect(error).to.exist;
           context.done(error, null);
           done();
         });

@@ -1,7 +1,8 @@
-'use strict;'
+'use strict';
+/* jshint expr: true */
 
-var Lambda = require('../index')
-var Boom = require('boom')
+var Lambda = require('../index');
+var Boom = require('boom');
 
 var router;
 
@@ -15,13 +16,13 @@ beforeEach((done) => {
 })
 
 var context = {
-  fail: function (error) {},
-  succeed: function (response) {},
-  done: function (error, response) {
+  fail: function(error) {},
+  succeed: function(response) {},
+  done: function(error, response) {
     if (error) {
       this.fail(error);
     } else {
-      this.succeed(response)
+      this.succeed(response);
     }
   }
 };
@@ -29,10 +30,10 @@ var context = {
 describe('Router:@unit', () => {
   describe('Registration:@unit', () => {
     it('should fail when invoking with no arguments', () => {
-      expect(router.register.bind(router)).to.throw(Error)
+      expect(router.register.bind(router)).to.throw(Error);
     });
     it('should fail when invoking with an empty route', () => {
-      expect(router.register.bind(router, {})).to.throw(Error)
+      expect(router.register.bind(router, {})).to.throw(Error);
     });
     it('should fail when passing a route that has no handler', () => {
       var route = {
@@ -87,7 +88,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
-        })
+        });
     })
 
     it('should fail when routing an event to a router with no routes defined', () => {
@@ -98,7 +99,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
-        })
+        });
     })
 
     it('should fail when routing an event that has no API gateway context', () => {
@@ -109,7 +110,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
-        })
+        });
     })
 
     it('should succeed when routing an event to a router with a matching route defined', (done) => {
@@ -127,18 +128,19 @@ describe('Router:@unit', () => {
           'resource-path': '/hello',
           'http-method': 'GET'
         }
-      }
+      };
       router.register(route);
       router.route(event, context)
         .then((response) => {
           expect(response).to.exist;
           context.done(null, response);
+          done();
         })
         .catch((error) => {
           expect(error).to.not.exist;
           context.done(error, null);
+          done();
         });
-      done()
     });
 
 
@@ -163,12 +165,14 @@ describe('Router:@unit', () => {
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);
+          done();
         })
         .catch((error) => {
           expect(error).to.exist;
           context.done(error, null);
+          done();
         });
-      done()
+
     });
 
     it('should fail when request causes handler to reject', (done) => {
@@ -192,12 +196,14 @@ describe('Router:@unit', () => {
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);
+          done();
         })
         .catch((error) => {
           expect(error).to.exist;
           context.done(error, null);
+          done();
         });
-      done()
+
     });
 
     it('should fail with a Boom payload when request causes handler to reject', (done) => {
@@ -222,13 +228,15 @@ describe('Router:@unit', () => {
         .then((response) => {
           expect(response).to.not.exist;
           context.done(null, response);
+          done();
         })
         .catch((error) => {
           expect(error).to.exist;
           expect(error.isBoom).to.not.exist;
           context.done(error, null);
+          done();
         });
-      done()
+
     });
   });
 

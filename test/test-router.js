@@ -1,5 +1,6 @@
 'use strict';
 /* jshint expr: true */
+/*eslint-env node, mocha */
 
 var Lambda = require('../index');
 var Boom = require('boom');
@@ -89,7 +90,7 @@ describe('Router:@unit', () => {
         .catch((error) => {
           expect(error).to.exist;
         });
-    })
+    });
 
     it('should fail when routing an event to a router with no routes defined', () => {
       var event = {};
@@ -100,7 +101,7 @@ describe('Router:@unit', () => {
         .catch((error) => {
           expect(error).to.exist;
         });
-    })
+    });
 
     it('should fail when routing an event that has no API gateway context', () => {
       var event = {};
@@ -111,7 +112,7 @@ describe('Router:@unit', () => {
         .catch((error) => {
           expect(error).to.exist;
         });
-    })
+    });
 
     it('should succeed when routing an event to a router with a matching route defined', (done) => {
       var route = {
@@ -236,7 +237,6 @@ describe('Router:@unit', () => {
           context.done(error, null);
           done();
         });
-
     });
   });
 

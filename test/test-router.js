@@ -14,7 +14,7 @@ var expect = Chai.expect;
 beforeEach((done) => {
   router = new Lambda();
   done();
-})
+});
 
 var context = {
   fail: function(error) {},
@@ -222,9 +222,8 @@ describe('Router:@unit', () => {
           'resource-path': '/hello',
           'http-method': 'GET'
         }
-      }
+      };
       router.register(route);
-      console.log('running test')
       router.route(event, context)
         .then((response) => {
           expect(response).to.not.exist;

@@ -28,7 +28,7 @@ module.exports = exports = internals.Router = function(options) {
   this.routes = {};
   var opts = options || {};
   return this;
-}
+};
 
 
 internals.Router.prototype.register = function(route) {
@@ -46,7 +46,7 @@ internals.Router.prototype.register = function(route) {
   if (route.initialize && typeof route.initialize == 'function') {
     route.validate(event.context);
   }
-}
+};
 
 internals.Router.prototype.route = function(event, context) {
   var self = this;
@@ -67,21 +67,21 @@ internals.Router.prototype.route = function(event, context) {
           .catch((error) => {
             var errorStatus = (error.isBoom) ? error.output.payload : error;
             return reject(errorStatus);
-          })
+          });
       } else {
         return reject(Boom.notImplemented(event.context['http-method'] + ' handler for path [' + event.context['resource-path'] + '] not registered'));
       }
     } else {
       return reject(Boom.badImplementation('Request context, method, and path are required'));
     }
-  })
-}
+  });
+};
 
 internals.Router.prototype._getRoute = function(event, context) {
-  var entry = this.routes[event.context['resource-path']]
+  var entry = this.routes[event.context['resource-path']];
   if (entry) {
     return entry[event.context['http-method'].toUpperCase()];
   } else {
     return null;
   }
-}
+};

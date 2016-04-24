@@ -21,10 +21,6 @@ var eventSchema = Joi.object().keys({
 }).unknown();
 
 module.exports = exports = internals.Router = function(options) {
-
-  if (!(this instanceof internals.Router))
-    return new internals.Router();
-
   this.routes = {};
   var opts = options || {};
   return this;
@@ -40,12 +36,10 @@ internals.Router.prototype.register = function(route) {
     throw (result.error);
   }
 
-  if (!routes[route.path])
+  if (!routes[route.path]) {
     routes[route.path] = {};
-  routes[route.path][route.method.toUpperCase()] = route;
-  if (route.initialize && typeof route.initialize == 'function') {
-    route.validate(event.context);
   }
+  routes[route.path][route.method.toUpperCase()] = route;
 };
 
 internals.Router.prototype.route = function(event, context) {

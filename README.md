@@ -7,7 +7,7 @@
 [![NPM](https://nodei.co/npm/lambda-time.png)](https://nodei.co/npm/lambda-time/)
 
 
-Lightweight Node.js utilities to simplify AWS Lambda development activities.  
+Lightweight Node.js router to simplify AWS Lambda development activities.  
 
 Most of the Lambda tutorials you'll find out there on the Interweb can handle "Hello, world!" very well.  Need another function? Just add it to Lambda. But when you move past the examples and attempt to create something meaningful, you might ask yourself: "Hmm, managing all these functions separately might become painful, so is it really a good idea?".  Especially when they all require the same shared packages, and when many need to communicate with each other somehow.
 
@@ -15,11 +15,17 @@ With `lambda-time`, your Lambdas are as big or as small as they need to be.  Com
 
 Since it's pretty likely (since you're still reading this) that you're implementing your Lambdas with Node.js.  It's also likely that even a relatively large Node.js API implementation will be significantly smaller and lighter than one implemented in Java.  So feel free to combine multiple functions into a single lambda.  Lambda-time makes it pretty easy.
 
+There are a few things you'll need to understand to use lambda-time:
+  * [Event routing](#event-routing)
+  * [Event handlers](#event-handlers)
+  * [Lambda deployments](#lambda-deployments)
+  * [API Gateway setup](#api-gateway-setup)
+
 ## Event routing
 
 The event router is a knock-off of other common routers out there, but with a twist.  It favors configuration over code in a way similar to the popular [hapi](http://hapijs.com) framework, although it's similarity to hapi ends with the routing model and some shared dependencies. `lambda-time` is far simpler, smaller, and less capable than `hapi`.  But it works with Lambda.
 
-A route determines what happens when an event is received by Lambda. To define a route, register it when your Lambda is loaded:
+With `lambda-time`, a route determines what happens when an event is received by Lambda. To define a route, register it when your Lambda is loaded:
 ```
 var Lambda = require('lambda-time');
 var Router = new Lamba();
@@ -83,3 +89,7 @@ deploy:
   zip_file: dist.zip
 ```
 In the example above, the gulpfile.js contains directives pulled from the `node-aws-lambda` package to create a zip file that is uploaded to Lambda.
+
+## Setting up API Gateway
+
+To use lambda-time, you'll need to set up resources and methods in the AWS API Gateway. Typically, `lambda-time` requires access to the request body, url parameters, headers, etc.  Providing that access involves specification of a body mapping template in the integration request for the corresponding API.  The json/params.txt file contains mapping rules that will provide your lambda, and `lambda-time` with that access.

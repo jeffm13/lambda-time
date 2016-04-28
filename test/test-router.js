@@ -132,6 +132,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
+          expect(error.statusCode).to.equal(400);
         });
     });
 
@@ -253,7 +254,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
-          expect(error.isBoom).to.not.exist;
+          expect(error.statusCode).to.equal(500);
           context.done(error, null);
           done();
         });
@@ -283,6 +284,7 @@ describe('Router:@unit', () => {
         })
         .catch((error) => {
           expect(error).to.exist;
+          expect(error.statusCode).to.equal(400);
           context.done(error, null);
           done();
         });

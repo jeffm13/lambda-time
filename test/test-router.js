@@ -4,6 +4,7 @@
 
 var Lambda = require('../index');
 var Boom = require('boom');
+var Joi = require('joi');
 
 var router;
 
@@ -198,7 +199,7 @@ describe('Router:@unit', () => {
 
     });
 
-    it('should fail when request causes handler to reject', (done) => {
+    it('should fail when request causes handler reject', (done) => {
       var route = {
         path: '/hello',
         method: 'GET',
@@ -229,7 +230,42 @@ describe('Router:@unit', () => {
 
     });
 
-    it('should fail with a Boom payload when request causes handler to reject', (done) => {
+    it('should transform error when handler rejects with a ValidationError', (done) => {
+      var route = {
+        path: '/hello',
+        method: 'GET',
+        handler: (event, context) => {
+          return new Promise((resolve, reject) => {
+            var schema = Joi.string();
+            var result = Joi.validate(1, schema);
+            expect(result.error).to.exist;
+            return reject(result.error);
+          });
+        }
+      };
+      var event = {
+        context: {
+          'resource-path': '/hello',
+          'http-method': 'GET'
+        }
+      };
+      router.register(route);
+      router.route(event, context)
+        .then((response) => {
+          expect(response).to.not.exist;
+          context.done(null, response);
+          done();
+        })
+        .catch((error) => {
+          expect(error).to.exist;
+          expect(error.statusCode).to.equal(400);
+          context.done(error, null);
+          done();
+        });
+
+    });
+
+    it('should fail with a badImplementation error when request causes handler to reject', (done) => {
       var route = {
         path: '/hello',
         method: 'GET',
@@ -259,7 +295,7 @@ describe('Router:@unit', () => {
           done();
         });
     });
-    it('should fail with a Boom payload when request has invalid properties', (done) => {
+    it('should fail with a badImplementation error when request has invalid properties', (done) => {
       var route = {
         path: '/hello',
         method: 'GET',

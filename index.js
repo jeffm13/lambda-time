@@ -46,12 +46,12 @@ internals.Router.prototype.route = function(event, context) {
   var self = this;
   return new Promise((resolve, reject) => {
     if (context == null) {
-      let error = processError(Boom.badImplementation('context is required'));
+      let error = this._processError(Boom.badImplementation('context is required'));
       return reject(error);
     }
     var result = Joi.validate(event, eventSchema);
     if (result.error) {
-      let error = processError(result.error);
+      let error = this._processError(result.error);
       return reject(error);
     }
 
@@ -63,32 +63,33 @@ internals.Router.prototype.route = function(event, context) {
             return resolve(response);
           })
           .catch((error) => {
-            var errorStatus = (error.isBoom) ? error.output.payload : error;
-            return reject(errorStatus);
+            let newError = this._processError(error);
+            return reject(newError);
           });
       } else {
-        let error = processError(Boom.notImplemented(event.context['http-method'] + ' handler for path [' + event.context['resource-path'] + '] not registered'));
+        let error = this._processError(Boom.notImplemented(event.context['http-method'] + ' handler for path [' + event.context['resource-path'] + '] not registered'));
         return reject(error);
       }
     } else {
-      let error = processError(Boom.badImplementation('Request context, method, and path are required'));
+      let error = this._processError(Boom.badImplementation('Request context, method, and path are required'));
       return reject(error);
     }
   });
 };
 
-function processError(error) {
+internals.Router.prototype._processError = function(error) {
+  var transformed = error;
   if (error.isJoi) {
-    error = validationError(error);
+    transformed = this._validationError(error);
   }
 
-  if (error.isBoom) {
-    error = error.output.payload;
+  if (transformed.isBoom) {
+    transformed = transformed.output.payload;
   }
-  return error;
+  return transformed;
 }
 
-function validationError(error) {
+internals.Router.prototype._validationError = function(error) {
   var errorValue;
   errorValue = Boom.badRequest('Invalid request input: ' + error.message);
   if (error.details) {

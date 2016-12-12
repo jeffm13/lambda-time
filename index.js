@@ -14,10 +14,8 @@ var routerSchema = Joi.object().keys({
 });
 
 var eventSchema = Joi.object().keys({
-  context: Joi.object().keys({
-    'resource-path': Joi.string().required(),
-    'http-method': Joi.string().required(),
-  }).unknown().required()
+    resource: Joi.string().required(),
+    httpMethod: Joi.string().required(),
 }).unknown().required();
 
 module.exports = exports = internals.Router = function(options) {
@@ -55,7 +53,7 @@ internals.Router.prototype.route = function(event, context) {
       return reject(error);
     }
 
-    if (event.context && event.context['resource-path']) {
+    if (event && event.resource) {
       let route = this._getRoute(event, context);
       if (route) {
         return route.handler(event, context)
@@ -99,9 +97,9 @@ internals.Router.prototype._validationError = function(error) {
 }
 
 internals.Router.prototype._getRoute = function(event, context) {
-  var entry = this.routes[event.context['resource-path']];
+  var entry = this.routes[event.resource];
   if (entry) {
-    return entry[event.context['http-method'].toUpperCase()];
+    return entry[event.httpMethod.toUpperCase()];
   } else {
     return null;
   }

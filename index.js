@@ -10,14 +10,12 @@ var internals = {};
 var routerSchema = Joi.object().keys({
   path: Joi.string().required(),
   method: Joi.string().required(),
-  handler: Joi.func().arity(2).required()
+  handler: Joi.func().required()
 });
 
 var eventSchema = Joi.object().keys({
-  context: Joi.object().keys({
-    'resource-path': Joi.string().required(),
-    'http-method': Joi.string().required(),
-  }).unknown().required()
+    resource: Joi.string().required(),
+    httpMethod: Joi.string().required(),
 }).unknown().required();
 
 module.exports = exports = internals.Router = function(options) {
@@ -27,19 +25,22 @@ module.exports = exports = internals.Router = function(options) {
 };
 
 
-internals.Router.prototype.register = function(route) {
-  var routes = this.routes;
+internals.Router.prototype.register = function(more_routes) {
+  for (var i=0; i < more_routes.length; i++) {
+    var route = more_routes[i];
+    var routes = this.routes;
 
-  Hoek.assert(route, 'route is required');
-  var result = Joi.validate(route, routerSchema);
-  if (result.error) {
-    throw (result.error);
-  }
+    Hoek.assert(route, 'route is required');
+    var result = Joi.validate(route, routerSchema);
+    if (result.error) {
+      throw (result.error);
+    }
 
-  if (!routes[route.path]) {
-    routes[route.path] = {};
+    if (!routes[route.path]) {
+      routes[route.path] = {};
+    }
+    routes[route.path][route.method.toUpperCase()] = route;
   }
-  routes[route.path][route.method.toUpperCase()] = route;
 };
 
 internals.Router.prototype.route = function(event, context) {
@@ -55,7 +56,7 @@ internals.Router.prototype.route = function(event, context) {
       return reject(error);
     }
 
-    if (event.context && event.context['resource-path']) {
+    if (event && event.resource) {
       let route = this._getRoute(event, context);
       if (route) {
         return route.handler(event, context)
@@ -99,9 +100,9 @@ internals.Router.prototype._validationError = function(error) {
 }
 
 internals.Router.prototype._getRoute = function(event, context) {
-  var entry = this.routes[event.context['resource-path']];
+  var entry = this.routes[event.resource];
   if (entry) {
-    return entry[event.context['http-method'].toUpperCase()];
+    return entry[event.httpMethod.toUpperCase()];
   } else {
     return null;
   }

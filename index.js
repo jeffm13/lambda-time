@@ -10,7 +10,7 @@ var internals = {};
 var routerSchema = Joi.object().keys({
   path: Joi.string().required(),
   method: Joi.string().required(),
-  handler: Joi.func().arity(2).required()
+  handler: Joi.func().required()
 });
 
 var eventSchema = Joi.object().keys({

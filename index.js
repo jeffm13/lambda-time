@@ -27,7 +27,7 @@ module.exports = exports = internals.Router = function(options) {
 
 internals.Router.prototype.register = function(more_routes) {
   for (var i=0; i < more_routes.length; i++) {
-    var route = route[i];
+    var route = more_routes[i];
     var routes = this.routes;
 
     Hoek.assert(route, 'route is required');
